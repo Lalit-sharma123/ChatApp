@@ -27,19 +27,19 @@ jobs:
           java-version: 21
 
       - name: Install Dependencies
-        working-directory: chat-app/frontend
+        working-directory: frontend
         run: npm install
 
       - name: Build React
-        working-directory: chat-app/frontend
+        working-directory: frontend
         run: npm run build
 
       - name: Sync Capacitor
-        working-directory: chat-app/frontend
+        working-directory: frontend
         run: npx cap sync android
 
       - name: Build APK
-        working-directory: chat-app/frontend/android
+        working-directory: frontend/android
         run: |
           chmod +x gradlew
           ./gradlew assembleDebug --stacktrace
@@ -48,4 +48,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: chat-app-apk
-          path: chat-app/frontend/android/app/build/outputs/apk/debug/app-debug.apk
+          path: frontend/android/app/build/outputs/apk/debug/app-debug.apk
