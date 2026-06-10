@@ -15,34 +15,37 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: 21
+          java-version: 17
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
 
       - name: Install Dependencies
-        working-directory: frontend
-        run: npm install
+        run: |
+          cd frontend
+          npm install
 
       - name: Build React
-        working-directory: frontend
-        run: npm run build
+        run: |
+          cd frontend
+          npm run build
 
       - name: Sync Capacitor
-        working-directory: frontend
-        run: npx cap sync android
+        run: |
+          cd frontend
+          npx cap sync android
 
       - name: Build APK
-        working-directory: frontend/android
         run: |
+          cd frontend/android
           chmod +x gradlew
-          ./gradlew assembleDebug --stacktrace
+          ./gradlew assembleDebug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
